@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Holds dashboard movie collections and their shared loading/error state.
 const initialState = {
   trendingMovies: null,
   nowPlayingMovies: null,
@@ -15,19 +16,23 @@ const moviesSlice = createSlice({
 
   reducers: {
     addMovies: (state, action) => {
+      // Trending movies are the main dashboard collection.
       state.trendingMovies = action.payload;
       state.isLoading = false;
       state.error = null;
     },
     setMoviesLoading: (state) => {
+      // Used before a catalog request so the dashboard can show loading UI.
       state.isLoading = true;
       state.error = null;
     },
     setMoviesError: (state, action) => {
+      // Keeps request failures available to the dashboard error state.
       state.isLoading = false;
       state.error = action.payload;
     },
     addMovieVideo: (state, action) => {
+      // Stores the selected movie trailer data for playback components.
       state.movieVideo = action.payload;
     },
     addNowPlayingMovies: (state, action) => {

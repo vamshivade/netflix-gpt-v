@@ -26,7 +26,7 @@ const Header = () => {
   };
 
   function handleGoToSearchGPT() {
-    dispatch(setIsSearchGpt());
+    dispatch(setIsSearchGpt(!searchGpt));
   }
 
   return (

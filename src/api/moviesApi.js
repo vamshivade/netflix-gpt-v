@@ -24,9 +24,16 @@ const getTopRatedMovies = (signal) => {
   return apiHandler("GET", endpoints.GET_TOP_RATED_MOVIES, null, null, signal);
 };
 
+// SEARCH_GPT_MOVIE
+const getSearchMovie = (params, signal) => {
+  console.log(params);
+  return apiHandler("GET", endpoints.GET_SEARCH_MOVIE, null, params, signal);
+};
+
 export {
   getTrendingMovies,
   getTrendingMovie,
   getNowPlayingMovie,
   getTopRatedMovies,
+  getSearchMovie,
 };
