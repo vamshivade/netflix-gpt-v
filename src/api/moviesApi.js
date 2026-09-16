@@ -26,7 +26,6 @@ const getTopRatedMovies = (signal) => {
 
 // SEARCH_GPT_MOVIE
 const getSearchMovie = (params, signal) => {
-  console.log(params);
   return apiHandler("GET", endpoints.GET_SEARCH_MOVIE, null, params, signal);
 };
 

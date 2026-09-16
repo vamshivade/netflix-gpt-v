@@ -36,7 +36,6 @@ const useGoogleGenAI = () => {
 
       const textResponse = response?.text || "No response received.";
       setResult(textResponse);
-      console.log(textResponse);
     } catch (error) {
       console.error("Gemini request failed:", error);
       setErrorMessage(

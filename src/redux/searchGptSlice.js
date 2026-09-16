@@ -31,11 +31,9 @@ const searchGptSlice = createSlice({
     },
     searchSucceeded: (state, action) => {
       // Stores normalized API results and clears any previous error.
-      console.log(action);
-      console.log(action.payload);
       state.isGptLoading = false;
       state.searchResults =
-        action.payload?.results.filter(
+        action.payload?.results?.filter(
           (result) => result?.poster_path || result?.backdrop_path,
         ) ?? [];
       state.totalPages = action.payload?.total_pages ?? [];
