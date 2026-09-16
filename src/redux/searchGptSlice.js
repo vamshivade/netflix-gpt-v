@@ -4,8 +4,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isSearchGpt: false,
   isGptLoading: false,
-  searchResults: [],
   errorMessage: null,
+
+  searchResults: [],
+  totalPages: null,
+  totalResults: null,
 };
 
 const searchGptSlice = createSlice({
@@ -28,8 +31,15 @@ const searchGptSlice = createSlice({
     },
     searchSucceeded: (state, action) => {
       // Stores normalized API results and clears any previous error.
+      console.log(action);
+      console.log(action.payload);
       state.isGptLoading = false;
-      state.searchResults = action.payload ?? [];
+      state.searchResults =
+        action.payload?.results.filter(
+          (result) => result?.poster_path || result?.backdrop_path,
+        ) ?? [];
+      state.totalPages = action.payload?.total_pages ?? [];
+      state.totalResults = action.payload?.total_results ?? [];
       state.errorMessage = null;
     },
     searchFailed: (state, action) => {

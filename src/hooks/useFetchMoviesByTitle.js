@@ -11,7 +11,7 @@ const useFetchMovieByTitle = () => {
   const dispatch = useDispatch();
   const controllerRef = useRef(null);
 
-  const fetchMovie = async (inputContents) => {
+  const fetchMovie = async (inputContents, currentPage) => {
     const query = inputContents.trim();
 
     if (!query) {
@@ -25,10 +25,13 @@ const useFetchMovieByTitle = () => {
 
     try {
       dispatch(searchStarted());
-      const response = await getSearchMovie({ query }, controller.signal);
+      const response = await getSearchMovie(
+        { query, page: currentPage },
+        controller.signal,
+      );
 
       if (!controller.signal.aborted) {
-        dispatch(searchSucceeded(response?.results));
+        dispatch(searchSucceeded(response));
       }
     } catch (error) {
       if (error.name !== "AbortError") {

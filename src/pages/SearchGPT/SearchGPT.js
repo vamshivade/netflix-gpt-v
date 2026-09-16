@@ -5,22 +5,35 @@ import useFetchMovieByTitle from "../../hooks/useFetchMoviesByTitle";
 import MovieCard from "../../components/movie/MovieCard";
 import { useDispatch } from "react-redux";
 import { resetSearch } from "../../redux/searchGptSlice";
+import Pagination from "../../components/pagination/Pagination";
 
 const SearchGPT = () => {
-  const [inputContents, setInputContents] = useState("");
   const dispatch = useDispatch();
-  const { isGptLoading, searchResults, errorMessage } = useSelector(
+
+  const { isGptLoading, searchResults, totalPages } = useSelector(
     (store) => store.searchGpt,
   );
 
   const fetchMovie = useFetchMovieByTitle();
+
+  const [inputContents, setInputContents] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const noOfPages = Number(totalPages) || 0;
 
   useEffect(() => {
     return () => dispatch(resetSearch());
   }, [dispatch]);
 
   const handleSearch = () => {
-    fetchMovie(inputContents);
+    setCurrentPage(1);
+    fetchMovie(inputContents, 1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchMovie(inputContents, page);
   };
 
   const handleReset = () => {
@@ -37,7 +50,6 @@ const SearchGPT = () => {
           Search by title and explore movies worth adding to your watchlist.
         </p>
       </div>
-
       <form
         className="search-box"
         onSubmit={(event) => {
@@ -60,12 +72,6 @@ const SearchGPT = () => {
         </button>
       </form>
 
-      {errorMessage && (
-        <div className="search-error" role="alert">
-          {errorMessage}
-        </div>
-      )}
-
       <div className="search-results">
         {isGptLoading ? (
           <div className="search-state">
@@ -86,6 +92,14 @@ const SearchGPT = () => {
           ))
         )}
       </div>
+      {Boolean(searchResults?.length) && (
+        <Pagination
+          searchResults={searchResults?.length}
+          noOfPages={noOfPages}
+          currentPage={currentPage}
+          setCurrentPage={handlePageChange}
+        />
+      )}
     </div>
   );
 };
